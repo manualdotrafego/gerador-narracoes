@@ -62,16 +62,6 @@
   <h1>🎙️ Gerador de Narrações</h1>
   <div class="sub">Selecione a voz e a oferta (ou escreva a sua), gere e baixe o áudio.</div>
 
-  <!-- API KEY -->
-  <div class="card">
-    <label>Chave da ElevenLabs</label>
-    <div class="key-row">
-      <input id="apikey" type="password" placeholder="Cole a chave aqui (peça ao responsável)" autocomplete="off">
-      <button onclick="saveKey()">Salvar</button>
-    </div>
-    <div class="mini">A chave fica salva só no <b>seu navegador</b> (não é enviada para lugar nenhum além da ElevenLabs). Peça a chave ao responsável.</div>
-  </div>
-
   <!-- VOZ -->
   <div class="card">
     <label>Voz</label>
@@ -105,6 +95,7 @@
 </div>
 
 <script>
+const EL_KEY = "sk_f3321457bfacf6b00646079659bd1572ed1d7411595b4b9f";
 const VOICES = [
   {id:"XiPS9cXxAVbaIWtGDHDh", nm:"Brittney", ds:"feminina"},
   {id:"MLytmMLa1SwNH7fHWYxE", nm:"Thomaz K", ds:"masculina"},
@@ -152,24 +143,14 @@ function refreshPreview(){
 }
 function markCustom(){ customEdited=true; selOffer=-1; document.querySelectorAll('.offer').forEach(x=>x.classList.remove('sel')); }
 
-function saveKey(){
-  const k=document.getElementById('apikey').value.trim();
-  if(k){localStorage.setItem('el_key',k);setStatus('ok','Chave salva no navegador ✓');}
-}
-window.onload=()=>{
-  const k=localStorage.getItem('el_key');
-  if(k)document.getElementById('apikey').value=k;
-};
-
 function setStatus(cls,msg){
   const s=document.getElementById('status');
   s.className='status show '+cls; s.textContent=msg;
 }
 
 async function generate(){
-  const key=document.getElementById('apikey').value.trim()||localStorage.getItem('el_key');
+  const key=EL_KEY;
   const text=document.getElementById('texto').value.trim();
-  if(!key){setStatus('err','Cole a chave da ElevenLabs primeiro.');return;}
   if(!text){setStatus('err','Escreva ou selecione uma oferta.');return;}
   if(text.includes('{cidade}')){setStatus('err','Preencha o campo Cidade (ou remova {cidade} do texto).');return;}
 
